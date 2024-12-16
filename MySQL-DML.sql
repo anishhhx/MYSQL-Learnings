@@ -39,7 +39,7 @@ truncate table teacher;
 
 -- 10.drop database dbname;
 
-drop 
+drop database usernew;
 
 
 
