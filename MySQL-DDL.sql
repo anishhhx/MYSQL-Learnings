@@ -1,4 +1,3 @@
-
 -- Topic :- Data Definition Language 
 
 -- 1.Create database dbname;
