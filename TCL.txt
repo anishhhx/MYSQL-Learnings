@@ -1,0 +1,31 @@
+TCL = Transaction Control Language
+1.Commit = Save
+2.Rollback = Undo
+3.Savepoint = partial rollback
+
+start transaction;
+
+Transaction properties
+Atomiticy = All or none
+Consistency = Accurately
+Isolation = Independently
+Durability  = Permanently
+
+start transaction;
+delete
+delete
+insert
+savepoint s1;
+update
+delete
+insert
+savepoint s2;
+update
+delete
+insert
+savepoint s3;
+update
+insert
+savepoint s4;
+update
+rollback to s2;

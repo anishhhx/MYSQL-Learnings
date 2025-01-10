@@ -1,0 +1,35 @@
+MariaDB [sqlbatch]> select * from student;
++------+------+------+------+------+
+| rno  | name | sub1 | sub2 | sub3 |
++------+------+------+------+------+
+|    1 | A    |   23 |   12 |   29 |
+|    2 | B    |   45 |   89 |   55 |
+|    3 | C    |   90 |   92 |   99 |
+|    4 | D    |   44 |   48 |   42 |
++------+------+------+------+------+
+4 rows in set (0.000 sec)
+
+MariaDB [sqlbatch]> start transaction;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [sqlbatch]> delete from student where id<10;
+ERROR 1054 (42S22): Unknown column 'id' in 'where clause'
+MariaDB [sqlbatch]> delete from student where rno<10;
+Query OK, 4 rows affected (0.003 sec)
+
+MariaDB [sqlbatch]> select * from student;
+Empty set (0.000 sec)
+
+MariaDB [sqlbatch]> rollback;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sqlbatch]> select * from student;
++------+------+------+------+------+
+| rno  | name | sub1 | sub2 | sub3 |
++------+------+------+------+------+
+|    1 | A    |   23 |   12 |   29 |
+|    2 | B    |   45 |   89 |   55 |
+|    3 | C    |   90 |   92 |   99 |
+|    4 | D    |   44 |   48 |   42 |
++------+------+------+------+------+
+4 rows in set (0.000 sec)
