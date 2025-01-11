@@ -1,0 +1,117 @@
+MariaDB [insystestdb]> Create table emp1 (id int unique,name text);
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [insystestdb]> Insert into emp1 values (1,'A');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [insystestdb]> Insert into emp1 values (1,'B');
+ERROR 1062 (23000): Duplicate entry '1' for key 'id'
+MariaDB [insystestdb]> Alter table mystudent modify rno int unique;
+ERROR 1062 (23000): Duplicate entry '1' for key 'rno'
+MariaDB [insystestdb]> update mystudent set rno=5 where name='divya';
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [insystestdb]> Select * from mystudent;
++------+-----------+------------+
+| rno  | name      | dob        |
++------+-----------+------------+
+|    1 | vicky     | 2000-10-10 |
+|    5 | Divya     | 2000-10-10 |
+|    2 | Vaishnavi | 2010-10-10 |
+|    3 | John      | 2002-02-02 |
+|    4 | A         | 2001-10-30 |
+|    6 | C         | 2009-10-10 |
+|    7 | D         | 2001-06-25 |
+|    8 | E         | 2001-05-30 |
++------+-----------+------------+
+8 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> Alter table mystudent modify rno int unique;
+Query OK, 0 rows affected (0.012 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [insystestdb]> Insert into mystudent values (1,"Divya","2000-10-10");
+ERROR 1062 (23000): Duplicate entry '1' for key 'rno'
+MariaDB [insystestdb]> Create table emp4 (id int  ,name text,age int check(age>18));
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [insystestdb]> Insert into emp4 values (1,'A',2);
+ERROR 4025 (23000): CONSTRAINT `emp4.age` failed for `insystestdb`.`emp4`
+MariaDB [insystestdb]> Insert into emp4 values (1,'A',20);
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [insystestdb]> Create table emp5 (id int,name text,dept text default "Sales");
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [insystestdb]> Insert into emp5(id,name) values (1,'A');
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [insystestdb]> select * from emp5;
++------+------+-------+
+| id   | name | dept  |
++------+------+-------+
+|    1 | A    | Sales |
++------+------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> Insert into emp5 values (2,'B',"hr");
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [insystestdb]> select * from emp5;
++------+------+-------+
+| id   | name | dept  |
++------+------+-------+
+|    1 | A    | Sales |
+|    2 | B    | hr    |
++------+------+-------+
+2 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> Create table emp6 (id int primary key, name text);
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [insystestdb]> Insert into emp6 values (NULL,'A');
+ERROR 1048 (23000): Column 'id' cannot be null
+MariaDB [insystestdb]> Insert into emp6 values (1,'A');
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [insystestdb]> Insert into emp6 values (1,'B');
+ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+MariaDB [insystestdb]> Create table dept (id int references emp6(id) on delete cascade,deptname text);
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [insystestdb]> insert into dept values (1000,'Sales');
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [insystestdb]> select * from dept;
++------+----------+
+| id   | deptname |
++------+----------+
+| 1000 | Sales    |
++------+----------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from emp6;
++----+------+
+| id | name |
++----+------+
+|  1 | A    |
++----+------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> describe emp6
+    -> ;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id    | int(11) | NO   | PRI | NULL    |       |
+| name  | text    | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.007 sec)
+
+MariaDB [insystestdb]> ^S
+
+
+
+
+

@@ -1,0 +1,38 @@
+SQL Constraints (keys)= Conditions
+
+1.Unique
+Create table emp1 (id int unique,name text);
+Insert into emp1 values (1,'A');
+Insert into emp1 values (1,'B');
+
+Alter table mystudent modify rno int unique;
+
+2.Not Null
+Create table emp2 (id int not null,name text);
+Create table emp3 (id int not null unique ,name text);
+
+Alter table emp2  id int not null;
+
+3.Check
+Create table emp4 (id int  ,name text,age int check(age>18));
+
+Insert into emp4 values (1,'A',2);
+
+4.Default
+Create table emp5 (id int,name text,dept text default "Sales");
+
+Insert into emp5(id,name) values (1,'A');
+Insert into emp5 values (2,'B',"hr");
+
+5.primary key
+Create table emp6 (id int primary key, name text);
+
+Insert into emp6 values (NULL,'A');
+
+
+6.foreign key
+Create table dept (id int references emp6(id) on delete cascade,deptname text);
+
+
+
+
