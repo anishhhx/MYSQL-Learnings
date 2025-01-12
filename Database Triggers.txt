@@ -1,0 +1,74 @@
+Database Triggers
+1.Creating Triggers
+Create Trigger triggername before/after DML  on dbname.tablename for each row
+begin
+SQL Code
+end 
+
+Sample Table
+Create table employee (id int,name text);
+Insert into employee values
+(1,'A'),
+(2,'B'),
+(3,'C'),
+(4,'D'),
+(5,'E');
+
+Create table department (id int,deptname text);
+Insert into department values
+(1,'Sales'),
+(2,'Sales'),
+(3,'Admin'),
+(4,'HR'),
+(5,'Admin');
+
+eg1.
+Delimiter $
+Create Trigger emptrigger1 after delete on insystestdb.employee
+for each row
+begin
+Delete from department where id=old.id;
+end$
+
+Delete from employee where id=4$
+
+Sample Table
+Create table oldemployees (id int,name text,dol date)$
+
+Eg2.
+Create Trigger emptrigger2 after delete on insystestdb.employee
+for each row
+begin
+Insert into oldemployees values (old.id,old.name,curdate());
+end$
+
+
+2.Deleting trigger
+drop trigger triggername;
+eg.
+Drop trigger emptrigger1$
+
+3.To get list of all triggers
+show triggers$
+
+eg3.
+Create Trigger emptrigger3 after delete on insystestdb.employee 
+for each row
+begin
+Delete from department where id=old.id;
+Insert into oldemployees values (old.id,old.name,curdate());
+end$
+
+eg4.
+Create trigger emptrigger4 after insert on insystestdb.employee for each row begin
+Insert into department values (new.id,NULL);
+end$
+
+
+sample Table
+Create table empdepts (id int,olddept text,curdept text,DOA date)$
+eg5.
+Create or replace Trigger emptrigger5 after update on insystestdb.department for each row
+begin
+Insert into empdepts values (old.id,old.deptname,new.deptname,curdate());
+end$

@@ -1,0 +1,315 @@
+
+MariaDB [insystestdb]> Create table employee (id int,name text);
+Query OK, 0 rows affected (0.016 sec)
+
+
+MariaDB [insystestdb]> Insert into employee values
+    -> (1,'A'),
+    -> (2,'B'),
+    -> (3,'C'),
+    -> (4,'D'),
+    -> (5,'E');
+Query OK, 5 rows affected (0.006 sec)
+
+MariaDB [insystestdb]> Create table department (id int,deptname text);
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [insystestdb]> Insert into department values
+    -> (1,'Sales'),
+    -> (2,'Sales'),
+    -> (3,'Admin'),
+    -> (4,'HR'),
+    -> (5,'Admin');
+Query OK, 5 rows affected (0.007 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+Records: 5  Duplicates: 0  Warnings: 0
+
+
+MariaDB [insystestdb]> select * from employee;
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    2 | B    |
+|    3 | C    |
+|    4 | D    |
+|    5 | E    |
++------+------+
+5 rows in set (0.001 sec)
+
+MariaDB [insystestdb]> select * from department;
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|    4 | HR       |
+|    5 | Admin    |
++------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> delimiter $
+MariaDB [insystestdb]> select * from department;
+    -> $
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|    4 | HR       |
+|    5 | Admin    |
++------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|    4 | HR       |
+|    5 | Admin    |
++------+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> Delimiter $
+MariaDB [insystestdb]> Create Trigger emptrigger1 after delete on insystestdb.employee
+    -> for each row
+    -> begin
+    -> Delete from department where id=old.id;
+    -> end$
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [insystestdb]> select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|    4 | HR       |
+|    5 | Admin    |
++------+----------+
+5 rows in set (0.000 sec)
+
+
+
+MariaDB [insystestdb]> select * from employee$
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    2 | B    |
+|    3 | C    |
+|    4 | D    |
+|    5 | E    |
++------+------+
+5 rows in set (0.004 sec)
+
+
+
+MariaDB [insystestdb]> Delete from employee where id=4$
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [insystestdb]> select * from employee$
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    2 | B    |
+|    3 | C    |
+|    5 | E    |
++------+------+
+4 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|    5 | Admin    |
++------+----------+
+4 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> Create table oldemployees (id int,name text,dol date)$
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [insystestdb]> select curdate()$
++------------+
+| curdate()  |
++------------+
+| 2024-07-19 |
++------------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> show triggers$
++-------------+--------+----------+---------------------------------------------------+--------+------------------------+-----------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| Trigger     | Event  | Table    | Statement                                         | Timing | Created                | sql_mode                                            | Definer        | character_set_client | collation_connection | Database Collation |
++-------------+--------+----------+---------------------------------------------------+--------+------------------------+-----------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| emptrigger1 | DELETE | employee | begin
+Delete from department where id=old.id;
+end | AFTER  | 2024-07-19 15:05:55.70 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION | root@localhost | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci |
++-------------+--------+----------+---------------------------------------------------+--------+------------------------+-----------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+1 row in set (0.005 sec)
+
+MariaDB [insystestdb]> drop trigger emptrigger1$
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [insystestdb]> Create Trigger emptrigger3 after delete on insystestdb.employee
+    -> for each row
+    -> begin
+    -> Delete from department where id=old.id;
+    -> Insert into oldemployees values (old.id,old.name,curdate());
+    -> end$
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [insystestdb]> select * from employee;
+    -> $
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    2 | B    |
+|    3 | C    |
+|    5 | E    |
++------+------+
+4 rows in set (0.001 sec)
+
+MariaDB [insystestdb]> select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|    5 | Admin    |
++------+----------+
+4 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from oldemployees$
+Empty set (0.001 sec)
+
+MariaDB [insystestdb]> delete from employee where id=5$
+Query OK, 1 row affected (0.009 sec)
+
+MariaDB [insystestdb]> select * from employee$
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    2 | B    |
+|    3 | C    |
++------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
++------+----------+
+3 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from oldemployees$
++------+------+------------+
+| id   | name | dol        |
++------+------+------------+
+|    5 | E    | 2024-07-19 |
++------+------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> Create trigger emptrigger4 after insert on insystestdb.employee for each row begin
+    -> Insert into department values (new.id,NULL);
+    -> end$
+Query OK, 0 rows affected (0.008 sec)
+
+
+MariaDB [insystestdb]> Insert into employee values (99,'insys')$
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [insystestdb]> Select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Sales    |
+|    2 | Sales    |
+|    3 | Admin    |
+|   99 | NULL     |
++------+----------+
+4 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> Select * from employee$
++------+-------+
+| id   | name  |
++------+-------+
+|    1 | A     |
+|    2 | B     |
+|    3 | C     |
+|   99 | insys |
++------+-------+
+4 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> Create table empdepts (id int,olddept text,curdept text,DOA date)$
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [insystestdb]>
+
+MariaDB [insystestdb]> Create or replace Trigger emptrigger5 after update on insystestdb.department for each row
+    -> begin
+    -> Insert into empdepts values (old.id,old.deptname,new.deptname,curdate());
+    -> end$
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [insystestdb]> Update department set deptname='Admin' where id=1$
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [insystestdb]> Select * from department$
++------+----------+
+| id   | deptname |
++------+----------+
+|    1 | Admin    |
+|    2 | Sales    |
+|    3 | Admin    |
+|   99 | NULL     |
++------+----------+
+4 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select * from empdepts$
++------+---------+---------+------------+
+| id   | olddept | curdept | DOA        |
++------+---------+---------+------------+
+|    1 | Sales   | Admin   | 2024-07-19 |
++------+---------+---------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> Update department set deptname='Sales' where id=1$
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [insystestdb]> select * from empdepts$
++------+---------+---------+------------+
+| id   | olddept | curdept | DOA        |
++------+---------+---------+------------+
+|    1 | Sales   | Admin   | 2024-07-19 |
+|    1 | Admin   | Sales   | 2024-07-19 |
++------+---------+---------+------------+
+2 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> select now()$
++---------------------+
+| now()               |
++---------------------+
+| 2024-07-19 15:26:51 |
++---------------------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]>
