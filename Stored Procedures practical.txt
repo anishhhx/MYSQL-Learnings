@@ -1,0 +1,242 @@
+MariaDB [insystestdb]> Delimiter $
+MariaDB [insystestdb]> Create procedure showdata()
+    -> begin
+    -> Select * from employee;
+    -> end$
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [insystestdb]> call showdata()$
++------+-------+
+| id   | name  |
++------+-------+
+|    1 | A     |
+|    2 | B     |
+|    3 | C     |
+|   99 | insys |
++------+-------+
+4 rows in set (0.005 sec)
+
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [insystestdb]> Create procedure dropemployee(x int)
+    -> begin
+    -> Delete from employee where id=x;
+    -> end$
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [insystestdb]> call dropemployee(2)$
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [insystestdb]> call showdata()$
++------+-------+
+| id   | name  |
++------+-------+
+|    1 | A     |
+|    3 | C     |
+|   99 | insys |
++------+-------+
+3 rows in set (0.001 sec)
+
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [insystestdb]> Create procedure updatedata(x int,y text)
+    -> begin
+    -> Update employee set name=y where id=x;
+    -> end$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [insystestdb]> call updatedata(99,'XYZ')$
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [insystestdb]> call showdata()$
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    3 | C    |
+|   99 | XYZ  |
++------+------+
+3 rows in set (0.000 sec)
+
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [insystestdb]> Create procedure insertdata(x int, y text)
+    -> begin
+    -> Insert into employee values (x,y);
+    -> end$
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [insystestdb]> call insertdata(100,'LMN')$
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [insystestdb]>
+MariaDB [insystestdb]> call insertdata(101,'PQR')$
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [insystestdb]> call insertdata(102,'JKL')$
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [insystestdb]> call showdata()$
++------+------+
+| id   | name |
++------+------+
+|    1 | A    |
+|    3 | C    |
+|   99 | XYZ  |
+|  100 | LMN  |
+|  101 | PQR  |
+|  102 | JKL  |
++------+------+
+6 rows in set (0.001 sec)
+
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [insystestdb]> Create procedure getdata(x int)
+    -> begin
+    -> Select * from employee where id=x;
+    -> end$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [insystestdb]> call getdata(100)$
++------+------+
+| id   | name |
++------+------+
+|  100 | LMN  |
++------+------+
+1 row in set (0.005 sec)
+
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [insystestdb]> select count(*) from employee$
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.005 sec)
+
+MariaDB [insystestdb]> Create procedure getcount(OUT x int)
+    -> begin
+    -> Select count(*) into x from employee;
+    -> end$
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [insystestdb]> call getcount(@y)
+    -> $
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [insystestdb]> select @y$
++------+
+| @y   |
++------+
+|    6 |
++------+
+1 row in set (0.000 sec)
+
+MariaDB [insystestdb]> Drop procedure showdata$
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [insystestdb]> call showdata()$
+ERROR 1305 (42000): PROCEDURE insystestdb.showdata does not exist
+MariaDB [insystestdb]> Select * from mysql.proc$
++-------------+--------------+-----------+---------------+----------+-----------------+------------------+---------------+---------------+---------+---------------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+-----------------------------------------------------+---------+----------------------+----------------------+--------------------+---------------------------------------------------------------------------------------------------+-----------+
+| db          | name         | type      | specific_name | language | sql_data_access | is_deterministic | security_type | param_list    | returns | body                                                                                              | definer        | created             | modified            | sql_mode                                            | comment | character_set_client | collation_connection | db_collation       | body_utf8                                                                                         | aggregate |
++-------------+--------------+-----------+---------------+----------+-----------------+------------------+---------------+---------------+---------+---------------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+-----------------------------------------------------+---------+----------------------+----------------------+--------------------+---------------------------------------------------------------------------------------------------+-----------+
+| sqlbatch    | showcustomer | PROCEDURE | showcustomer  | SQL      | CONTAINS_SQL    | NO               | DEFINER       |               |         | begin
+Select * from customer;
+end                                                                 | root@localhost | 2024-07-14 13:10:16 | 2024-07-14 13:10:16 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Select * from customer;
+end                                                                 | NONE      |
+| sqlbatch    | showdata     | PROCEDURE | showdata      | SQL      | CONTAINS_SQL    | NO               | DEFINER       |               |         | begin
+Select c.id,c.name,c.address,o.item,o.price from customer c join orders o on c.id=o.id;
+end | root@localhost | 2024-07-14 13:12:54 | 2024-07-14 13:12:54 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Select c.id,c.name,c.address,o.item,o.price from customer c join orders o on c.id=o.id;
+end | NONE      |
+| sqlbatch    | deletedata   | PROCEDURE | deletedata    | SQL      | CONTAINS_SQL    | NO               | DEFINER       | x int         |         | begin
+delete from customer where id=x;
+End                                                        | root@localhost | 2024-07-14 13:18:15 | 2024-07-14 13:18:15 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+delete from customer where id=x;
+End                                                        | NONE      |
+| sqlbatch    | updateName   | PROCEDURE | updateName    | SQL      | CONTAINS_SQL    | NO               | DEFINER       | x int,y text  |         | begin
+update customer set name=y where id=x;
+end                                                  | root@localhost | 2024-07-14 13:20:24 | 2024-07-14 13:20:24 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+update customer set name=y where id=x;
+end                                                  | NONE      |
+| sqlbatch    | testout      | PROCEDURE | testout       | SQL      | CONTAINS_SQL    | NO               | DEFINER       | OUT x int     |         | begin
+Select count(*) into x from customer;
+end                                                   | root@localhost | 2024-07-14 13:26:12 | 2024-07-14 13:26:12 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Select count(*) into x from customer;
+end                                                   | NONE      |
+| insystestdb | dropemployee | PROCEDURE | dropemployee  | SQL      | CONTAINS_SQL    | NO               | DEFINER       | x int         |         | begin
+Delete from employee where id=x;
+end                                                        | root@localhost | 2024-07-22 14:46:42 | 2024-07-22 14:46:42 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Delete from employee where id=x;
+end                                                        | NONE      |
+| insystestdb | updatedata   | PROCEDURE | updatedata    | SQL      | CONTAINS_SQL    | NO               | DEFINER       | x int,y text  |         | begin
+Update employee set name=y where id=x;
+end                                                  | root@localhost | 2024-07-22 14:51:08 | 2024-07-22 14:51:08 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Update employee set name=y where id=x;
+end                                                  | NONE      |
+| insystestdb | insertdata   | PROCEDURE | insertdata    | SQL      | CONTAINS_SQL    | NO               | DEFINER       | x int, y text |         | begin
+Insert into employee values (x,y);
+end                                                      | root@localhost | 2024-07-22 14:52:53 | 2024-07-22 14:52:53 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Insert into employee values (x,y);
+end                                                      | NONE      |
+| insystestdb | getdata      | PROCEDURE | getdata       | SQL      | CONTAINS_SQL    | NO               | DEFINER       | x int         |         | begin
+Select * from employee where id=x;
+end                                                      | root@localhost | 2024-07-22 14:55:13 | 2024-07-22 14:55:13 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Select * from employee where id=x;
+end                                                      | NONE      |
+| insystestdb | getcount     | PROCEDURE | getcount      | SQL      | CONTAINS_SQL    | NO               | DEFINER       | OUT x int     |         | begin
+Select count(*) into x from employee;
+end                                                   | root@localhost | 2024-07-22 15:01:43 | 2024-07-22 15:01:43 | NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION |         | utf8mb4              | utf8mb4_general_ci   | utf8mb4_general_ci | begin
+Select count(*) into x from employee;
+end                                                   | NONE      |
++-------------+--------------+-----------+---------------+----------+-----------------+------------------+---------------+---------------+---------+---------------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+-----------------------------------------------------+---------+----------------------+----------------------+--------------------+---------------------------------------------------------------------------------------------------+-----------+
+10 rows in set (0.000 sec)
+
+MariaDB [insystestdb]> `Select name,body from mysql.proc$
+    `> '$
+    `> `$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '`Select name,body from mysql.proc$
+'$
+`' at line 1
+MariaDB [insystestdb]> Select name,body from mysql.proc$
++--------------+---------------------------------------------------------------------------------------------------+
+| name         | body                                                                                              |
++--------------+---------------------------------------------------------------------------------------------------+
+| showcustomer | begin
+Select * from customer;
+end                                                                 |
+| showdata     | begin
+Select c.id,c.name,c.address,o.item,o.price from customer c join orders o on c.id=o.id;
+end |
+| deletedata   | begin
+delete from customer where id=x;
+End                                                        |
+| updateName   | begin
+update customer set name=y where id=x;
+end                                                  |
+| testout      | begin
+Select count(*) into x from customer;
+end                                                   |
+| dropemployee | begin
+Delete from employee where id=x;
+end                                                        |
+| updatedata   | begin
+Update employee set name=y where id=x;
+end                                                  |
+| insertdata   | begin
+Insert into employee values (x,y);
+end                                                      |
+| getdata      | begin
+Select * from employee where id=x;
+end                                                      |
+| getcount     | begin
+Select count(*) into x from employee;
+end                                                   |
++--------------+---------------------------------------------------------------------------------------------------+
+10 rows in set (0.000 sec)
+
+MariaDB [insystestdb]>
+

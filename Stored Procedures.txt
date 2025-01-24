@@ -1,0 +1,59 @@
+Stored Procedures
+Delimiter $
+Create or replace procedure procedurename(parameters)
+begin
+SQL CODE
+end
+eg1.
+Delimiter $
+Create procedure showdata()
+begin
+Select * from employee;
+end$
+
+call procedurename$
+
+eg2.
+Create procedure dropemployee(x int)
+begin
+Delete from employee where id=x;
+end$
+
+eg3.
+Create procedure updatedata(IN x int,IN y text)
+begin
+Update employee set name=y where id=x;
+end$
+
+eg4.
+Create procedure insertdata(x int, y text)
+begin
+Insert into employee values (x,y);
+end$
+
+eg5.
+Create procedure getdata(x int)
+begin
+Select * from employee where id=x;
+end$
+
+eg6.
+Create procedure getcount(OUT x int)
+begin
+Select count(*) into x from employee;
+end$
+
+call getcount(@y)
+select @y$
+
+
+To Delete procedure
+drop procedure procedurename$
+eg7.
+Drop procedure showdata$
+
+To get list of all procedure
+Select * from mysql.proc$
+
+Select name,body from mysql.proc$
+
