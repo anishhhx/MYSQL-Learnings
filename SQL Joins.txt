@@ -1,0 +1,64 @@
+SQL Joins
+sample tables
+create table customer (id int,name text,address text);
+
+Insert into customer values
+(1,'A','thane'),
+(2,'B','thane'),
+(3,'C','mumbai'),
+(4,'D','mumbai');
+
+Create Table orders (id int , item text, price int);
+
+insert into orders values
+(1,'Item 1',100),
+(3,'Item 2',200),
+(2,'Item 3',150),
+(5,'Item 4',100);
+
+Select customer.id,customer.name,orders.item,orders.price,customer.address from customer join orders  on customer.id=orders.id;
+
+Table aliases
+Select c.id,c.name,o.item,o.price,c.address from customer c join orders o on c.id=o.id;
+
+Types of join
+1.Inner Join / Natural Join / Equi Join
+2.Outer left join
+Select c.id,c.name,o.item,o.price,c.address from customer c left join orders o on c.id=o.id;
+3.Outer right join
+Select o.id,c.name,o.item,o.price,c.address from customer c right join orders o on c.id=o.id;
+
+4.full join (cartesian product)
+
+Create table t1 (name text);
+insert into t1 values
+('A'),
+('B'),
+('C');
+Create table t2 (name text);
+insert into t2 values
+('X'),
+('Y'),
+('Z');
+
+ select * from t1 full join t2;
+
+5.self join
+Create table myemp (id int, name text, mgr_id int);
+
+Insert into myemp values
+(1,'A',5),
+(2,'B',5),
+(3,'C',7),
+(4,'D',7),
+(5,'E',NULL),
+(6,'F',5),
+(7,'G',NULL),
+(8,'H',7),
+(9,'I',7),
+(10,'J',5);
+
+Select e.name , m.name from myemp e join myemp m on e.mgr_id=m.id;
+
+Column Aliases
+Select e.name 'EMPLOYEE', m.name 'MANAGER' from myemp e join myemp m on e.mgr_id=m.id;
