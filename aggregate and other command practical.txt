@@ -1,0 +1,141 @@
+MariaDB [mydb]> select * from worker;
++-----------+------------+-----------+---------+---------------------+------------+
+| worker_id | first_name | last_name | salary  | joining_date        | department |
++-----------+------------+-----------+---------+---------------------+------------+
+|         4 | Pqr        | B1        | 1000000 | 2023-11-04 00:00:00 | admin      |
+|         5 | A2         | B2        |   40000 | 2024-02-13 00:00:00 | HR         |
+|         6 | abc        | xyz       |  120000 | 2024-07-21 00:00:00 | HR         |
+|       102 | jkl        | pqr       |  450000 | 2024-08-05 00:00:00 | admin      |
+|       103 | Vikas      | xyz       |    NULL | 2024-07-21 00:00:00 | Sales      |
+|       104 | John       | Doe       |    NULL | NULL                | Admin      |
++-----------+------------+-----------+---------+---------------------+------------+
+6 rows in set (0.010 sec)
+
+MariaDB [mydb]> Select sum(salary) from worker;
++-------------+
+| sum(salary) |
++-------------+
+|     1610000 |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [mydb]> Select avg(salary) from worker;
++-------------+
+| avg(salary) |
++-------------+
+| 402500.0000 |
++-------------+
+1 row in set (0.000 sec)
+
+MariaDB [mydb]> Select avg(salary), sum(salary) from worker;
++-------------+-------------+
+| avg(salary) | sum(salary) |
++-------------+-------------+
+| 402500.0000 |     1610000 |
++-------------+-------------+
+1 row in set (0.000 sec)
+
+MariaDB [mydb]> select count(first_name) from worker;
++-------------------+
+| count(first_name) |
++-------------------+
+|                 6 |
++-------------------+
+1 row in set (0.000 sec)
+
+MariaDB [mydb]> select count(salary) from worker;
++---------------+
+| count(salary) |
++---------------+
+|             4 |
++---------------+
+1 row in set (0.000 sec)
+
+MariaDB [mydb]> select count(*) from worker;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.005 sec)
+
+MariaDB [mydb]> Select department,sum(salary) from worker group by department;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| admin      |     1450000 |
+| HR         |      160000 |
+| Sales      |        NULL |
++------------+-------------+
+3 rows in set (0.003 sec)
+
+MariaDB [mydb]> Select department,sum(salary) 'total salary', avg(salary) 'average salary', count(*)  'total staff' from worker group by department;
++------------+--------------+----------------+-------------+
+| department | total salary | average salary | total staff |
++------------+--------------+----------------+-------------+
+| admin      |      1450000 |    725000.0000 |           3 |
+| HR         |       160000 |     80000.0000 |           2 |
+| Sales      |         NULL |           NULL |           1 |
++------------+--------------+----------------+-------------+
+3 rows in set (0.001 sec)
+
+
+MariaDB [mydb]> Select department,sum(salary) from worker group by department having sum(salary)>1000000;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| admin      |     1450000 |
++------------+-------------+
+1 row in set (0.001 sec)
+
+MariaDB [mydb]> Select * from worker order by first_name ;
++-----------+------------+-----------+---------+---------------------+------------+
+| worker_id | first_name | last_name | salary  | joining_date        | department |
++-----------+------------+-----------+---------+---------------------+------------+
+|         5 | A2         | B2        |   40000 | 2024-02-13 00:00:00 | HR         |
+|         6 | abc        | xyz       |  120000 | 2024-07-21 00:00:00 | HR         |
+|       102 | jkl        | pqr       |  450000 | 2024-08-05 00:00:00 | admin      |
+|       104 | John       | Doe       |    NULL | NULL                | Admin      |
+|         4 | Pqr        | B1        | 1000000 | 2023-11-04 00:00:00 | admin      |
+|       103 | Vikas      | xyz       |    NULL | 2024-07-21 00:00:00 | Sales      |
++-----------+------------+-----------+---------+---------------------+------------+
+6 rows in set (0.001 sec)
+
+MariaDB [mydb]> Select * from worker order by salary desc ;
++-----------+------------+-----------+---------+---------------------+------------+
+| worker_id | first_name | last_name | salary  | joining_date        | department |
++-----------+------------+-----------+---------+---------------------+------------+
+|         4 | Pqr        | B1        | 1000000 | 2023-11-04 00:00:00 | admin      |
+|       102 | jkl        | pqr       |  450000 | 2024-08-05 00:00:00 | admin      |
+|         6 | abc        | xyz       |  120000 | 2024-07-21 00:00:00 | HR         |
+|         5 | A2         | B2        |   40000 | 2024-02-13 00:00:00 | HR         |
+|       103 | Vikas      | xyz       |    NULL | 2024-07-21 00:00:00 | Sales      |
+|       104 | John       | Doe       |    NULL | NULL                | Admin      |
++-----------+------------+-----------+---------+---------------------+------------+
+6 rows in set (0.000 sec)
+
+MariaDB [mydb]> Select department from worker;
++------------+
+| department |
++------------+
+| admin      |
+| admin      |
+| Admin      |
+| HR         |
+| HR         |
+| Sales      |
++------------+
+6 rows in set (0.000 sec)
+
+MariaDB [mydb]> Select distinct department from worker;
++------------+
+| department |
++------------+
+| admin      |
+| HR         |
+| Sales      |
++------------+
+3 rows in set (0.001 sec)
+
+MariaDB [mydb]>
+

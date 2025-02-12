@@ -1,0 +1,37 @@
+1.Aggregate Functions = summary function / Column functions
+
+Sum(), min(), max() , Avg() , Count()
+eg.
+
+Select sum(salary) from worker;
+
+Select avg(salary), sum(salary) from worker;
+
+
+ 
+select count(salary) from worker;
+
+
+select count(*) from worker;
+
+2.
+Group by
+
+Select department,sum(salary) from worker group by department;
+
+3.
+having
+
+Select department,sum(salary) from worker group by department having sum(salary)>1000000;
+
+4.
+order by
+Select * from worker order by first_name desc;
+
+Select * from worker order by first_name ;
+
+5.
+distinct
+
+Select distinct department from worker;
+
