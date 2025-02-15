@@ -1,0 +1,33 @@
+Database Views = Virtual Table / Shadow copy
+1.To create view
+
+Create View Viewname as Select Query;
+eg.
+Create View CustomerView as Select id,name from customer;
+
+Insert into customerview values (6,'ABC');
+
+
+Insert into customer values (7,'STU','thane');
+
+
+eg2.
+Create view customerview2 as select * from customer where address='thane';
+
+2.To get list of view
+show full tables;
+
+3.To delete view
+Drop view viewname;
+
+eg.
+Drop view customerview2;
+
+4.to Update View
+Create or replace view oldviewname as select query;
+
+eg.
+Create or replace view customerview as select name from customer;
+
+
+

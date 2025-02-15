@@ -1,0 +1,156 @@
+MariaDB [sqlbatch]> select * from customer;
++----+-------+---------+
+| id | name  | address |
++----+-------+---------+
+|  4 | JKL   | Thane   |
+|  5 | Insys | mumbai  |
++----+-------+---------+
+2 rows in set (0.011 sec)
+
+MariaDB [sqlbatch]> Create View CustomerView as Select id,name from customer;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [sqlbatch]> select * from customerview;
++----+-------+
+| id | name  |
++----+-------+
+|  4 | JKL   |
+|  5 | Insys |
++----+-------+
+2 rows in set (0.001 sec)
+
+MariaDB [sqlbatch]> Insert into customerview values (6,'ABC');
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [sqlbatch]> select * from customerview;
++----+-------+
+| id | name  |
++----+-------+
+|  4 | JKL   |
+|  5 | Insys |
+|  6 | ABC   |
++----+-------+
+3 rows in set (0.003 sec)
+
+MariaDB [sqlbatch]> select * from customer;
++----+-------+---------+
+| id | name  | address |
++----+-------+---------+
+|  4 | JKL   | Thane   |
+|  5 | Insys | mumbai  |
+|  6 | ABC   | NULL    |
++----+-------+---------+
+3 rows in set (0.000 sec)
+
+MariaDB [sqlbatch]> Insert into customer values (7,'STU','thane');
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [sqlbatch]> select * from customer;
++----+-------+---------+
+| id | name  | address |
++----+-------+---------+
+|  4 | JKL   | Thane   |
+|  5 | Insys | mumbai  |
+|  6 | ABC   | NULL    |
+|  7 | STU   | thane   |
++----+-------+---------+
+4 rows in set (0.000 sec)
+
+MariaDB [sqlbatch]> select * from customerview;
++----+-------+
+| id | name  |
++----+-------+
+|  4 | JKL   |
+|  5 | Insys |
+|  6 | ABC   |
+|  7 | STU   |
++----+-------+
+4 rows in set (0.000 sec)
+
+
+MariaDB [sqlbatch]> Create view customerview2 as select * from customer where address='thane';
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [sqlbatch]> select * from customerview2;
++----+------+---------+
+| id | name | address |
++----+------+---------+
+|  4 | JKL  | Thane   |
+|  7 | STU  | thane   |
++----+------+---------+
+2 rows in set (0.001 sec)
+
+MariaDB [sqlbatch]> show tables;
++--------------------+
+| Tables_in_sqlbatch |
++--------------------+
+| customer           |
+| customernames      |
+| customerview       |
+| customerview2      |
+| emp                |
+| emp3               |
+| emp4               |
+| emp5               |
+| foods              |
+| oldcustomer        |
+| orders             |
+| pets               |
+| result             |
+| std                |
+| student            |
+| t1                 |
++--------------------+
+16 rows in set (0.001 sec)
+
+MariaDB [sqlbatch]> show full tables;
++--------------------+------------+
+| Tables_in_sqlbatch | Table_type |
++--------------------+------------+
+| customer           | BASE TABLE |
+| customernames      | BASE TABLE |
+| customerview       | VIEW       |
+| customerview2      | VIEW       |
+| emp                | BASE TABLE |
+| emp3               | BASE TABLE |
+| emp4               | BASE TABLE |
+| emp5               | BASE TABLE |
+| foods              | BASE TABLE |
+| oldcustomer        | BASE TABLE |
+| orders             | BASE TABLE |
+| pets               | BASE TABLE |
+| result             | BASE TABLE |
+| std                | BASE TABLE |
+| student            | BASE TABLE |
+| t1                 | BASE TABLE |
++--------------------+------------+
+16 rows in set (0.011 sec)
+
+MariaDB [sqlbatch]> describe customerview;
++-------+---------+------+-----+---------+-------+
+| Field | Type    | Null | Key | Default | Extra |
++-------+---------+------+-----+---------+-------+
+| id    | int(11) | NO   |     | NULL    |       |
+| name  | text    | YES  |     | NULL    |       |
++-------+---------+------+-----+---------+-------+
+2 rows in set (0.007 sec)
+
+
+MariaDB [sqlbatch]> Create or replace view customerview as select name from customer;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [sqlbatch]> select * from customerview;
++-------+
+| name  |
++-------+
+| JKL   |
+| Insys |
+| ABC   |
+| STU   |
++-------+
+4 rows in set (0.001 sec)
+
+MariaDB [sqlbatch]>
+
+
+
