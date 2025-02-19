@@ -1,0 +1,36 @@
+SubQuery = Query within query = nested query
+
+DQL = 
+Select * from worker where department='HR';
+
+Select * from worker where salary>100000;
+
+
+
+
+Select salary from worker where first_name='abc';
+120000
+Select * from worker where salary>120000;
+
+subquery eg.
+Select * from worker where salary>(Select salary from worker where first_name='abc');
+
+Point to remember
+1.Reverse Execution (i.e. first query will execute last and last query execute first.)
+
+2.You can nest any number of query.
+
+3.You can address different table in each query.
+
+
+eg.
+
+Select empname from employee where empheadid=(
+Select empid from employees where empname='abhishek');
+
+
+
+Select deptname from empdept where deptid in (Select department from employee where empid>103);
+
+	
+
